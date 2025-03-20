@@ -30,6 +30,10 @@
         {
           "title": "Setting Up a Python Project",
           "slug": "setup"
+        },
+        {
+          "title": "Advanced Features",
+          "slug": "advanced-features"
         }
       ]
     },

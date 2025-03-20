@@ -3,7 +3,7 @@
 
 import { useMemo } from 'react';
 import { getTopicNavigation } from '@/hooks/topicNavigationServer';
-import type { Topic, NavigationLink } from '@/hooks/topicNavigationServer';
+import { Topic, NavigationLink } from '@/types';
 
 export function useTopicNavigation(
   courseSlug: string,

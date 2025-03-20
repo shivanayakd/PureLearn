@@ -1,5 +1,6 @@
-import { Quiz, QuizProps } from '@/components/quiz/Quiz';
+import { Quiz } from '@/components/quiz/Quiz';
 import { useQuizProgress } from '@/components/quiz/QuizProvider';
+import { QuizProps } from '@/types';
 import { useRouter } from 'next/router';
 
 export function MDXQuiz({ questions }: Omit<QuizProps, 'onComplete'>) {

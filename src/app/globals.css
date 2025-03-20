@@ -182,4 +182,12 @@ body {
   }
 }
 
+/* a {
+  @apply text-primary;
+  text-decoration: underline;
+  text-decoration-color: text-blue-500;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.2em;
+} */
+
 /* Existing code */

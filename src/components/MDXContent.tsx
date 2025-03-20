@@ -11,6 +11,9 @@ import InlineCode from './mdx/InlineCode';
 import Heading from './mdx/Heading';
 import { Quiz } from './quiz/Quiz';
 import { MarkAsCompleted } from './MarkAsCompleted';
+import MDXImage from './mdx/MDXImage';
+import MDXVideo from './mdx/MDXVideo';
+import Alert from './mdx/Alert';
 
 type MDXContentProps = {
   source: MDXRemoteSerializeResult;
@@ -70,6 +73,16 @@ export default function MDXContent({ source }: MDXContentProps) {
       return <InlineCode>{children}</InlineCode>;
     },
 
+    // Add Image component with caption support - render directly, not as a child of p
+    img: (props: { src: string; alt: string; title?: string }) => {
+      // This ensures the image is not wrapped in a paragraph
+      return (
+        <React.Fragment>
+          <MDXImage {...props} />
+        </React.Fragment>
+      );
+    },
+
     // Heading components with features
     h1: (props: { children: React.ReactNode; id?: string }) => (
       <Heading level={1} {...props} />
@@ -88,6 +101,15 @@ export default function MDXContent({ source }: MDXContentProps) {
     ),
     h6: (props: { children: React.ReactNode; id?: string }) => (
       <Heading level={6} {...props} />
+    ),
+
+    a: (props: { children: React.ReactNode; href: string }) => (
+      <a
+        {...props}
+        className="text-blue-500 underline decoration-blue-500 decoration-2 underline-offset-2 hover:text-blue-600 hover:decoration-blue-600"
+      >
+        {props.children}
+      </a>
     ),
 
     // Add Quiz component to be used in MDX
@@ -112,6 +134,22 @@ export default function MDXContent({ source }: MDXContentProps) {
 
     // Add the MarkAsCompleted component to the MDX components
     MarkAsCompleted: () => <MarkAsCompleted />,
+
+    // Add Video/iframe component
+    Video: (props: {
+      src: string;
+      title?: string;
+      width?: string | number;
+      height?: string | number;
+      caption?: string;
+    }) => <MDXVideo {...props} />,
+
+    // Add Alert component for warnings
+    Alert: (props: {
+      type?: 'warning' | 'info' | 'success' | 'error';
+      title?: string;
+      children: React.ReactNode;
+    }) => <Alert {...props} />,
   };
 
   return (
@@ -137,33 +175,32 @@ export default function MDXContent({ source }: MDXContentProps) {
 
 // Helper component for paragraph wrapping logic
 function ParagraphWrapper({ children }: { children: React.ReactNode }) {
-  // Check if children contains a pre element or code block
+  // Don't wrap any React elements in p tags (only wrap plain text)
+  // This is a more conservative approach that prevents invalid nesting
+
+  // Convert children to array for inspection
   const childrenArray = React.Children.toArray(children);
 
-  // If there's only one child and it's a code block, don't wrap in p
-  if (childrenArray.length === 1) {
-    const child = childrenArray[0];
-    if (
+  // If there are no children, or only text/string children, use p tag
+  const hasOnlyTextChildren = childrenArray.every(
+    (child) => typeof child === 'string' || typeof child === 'number',
+  );
+
+  // Check if array includes img or MDXImage components
+  const hasImageChild = childrenArray.some(
+    (child) =>
       React.isValidElement(child) &&
-      (child.type === 'pre' ||
-        child.type === 'code' ||
-        (typeof child.type === 'function' &&
-          child.type.name === 'SyntaxHighlighter'))
-    ) {
-      return <>{children}</>;
-    }
+      (child.type === 'img' ||
+        (typeof child.type === 'function' && child.type.name === 'MDXImage')),
+  );
+
+  // If we only have text children and no images, render as p
+  if (hasOnlyTextChildren && !hasImageChild) {
+    return <p className="my-1">{children}</p>;
   }
 
-  // Check if any child is a pre element
-  for (const child of childrenArray) {
-    if (React.isValidElement(child) && child.type === 'pre') {
-      // If we find a pre element, render all children without p wrapper
-      return <>{children}</>;
-    }
-  }
-
-  // Otherwise, render as a normal paragraph
-  return <p className="my-1">{children}</p>;
+  // Otherwise, render without p wrapper
+  return <>{children}</>;
 }
 
 // Fullscreen toggle button component

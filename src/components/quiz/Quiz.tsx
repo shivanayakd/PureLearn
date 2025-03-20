@@ -74,7 +74,7 @@ export function Quiz({ questions, onComplete }: QuizProps) {
   return (
     <div className="rounded-lg border p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-xl font-semibold">Quiz</h3>
+        <h3 className="my-0 text-xl font-semibold">Quiz</h3>
         <span className="text-muted-foreground text-sm">
           Question {currentQuestion + 1} of {questions.length}
         </span>
@@ -89,7 +89,7 @@ export function Quiz({ questions, onComplete }: QuizProps) {
               key={index}
               onClick={() => handleOptionSelect(index)}
               className={cn(
-                'w-full rounded-md border p-3 text-left transition-colors',
+                'w-full cursor-pointer rounded-md border p-3 text-left transition-colors',
                 'hover:bg-muted/50 focus:ring-primary/50 focus:ring-2 focus:outline-none',
                 selectedOption === index &&
                   index === currentQ.correctAnswer &&

@@ -1,0 +1,373 @@
+---
+title: Advanced Python Features
+description: Learn about advanced Python features and techniques for becoming a proficient Python developer
+---
+
+# Advanced Python Features
+
+Welcome to our deep dive into advanced Python features. This guide will help you understand sophisticated Python concepts that will take your coding skills to the next level.
+
+<Alert type="info" title="Learning Resources">
+  For comprehensive documentation, always refer to the [Official Python Documentation](https://docs.python.org/3/). This course complements but doesn't replace the official resources.
+</Alert>
+
+## Data Structures in Python
+
+Python offers several built-in data structures that are powerful and flexible for various programming tasks.
+
+<Alert type="info" title="Core Data Structures">
+  Python's main data structures include lists, tuples, dictionaries, and sets. Each has specific use cases and performance characteristics.
+</Alert>
+
+### Lists and Their Applications
+
+Lists are one of the most versatile data structures in Python. They can store elements of different types and are mutable.
+
+```python
+# Using lists as stacks (LIFO)
+stack = [3, 4, 5]
+stack.append(6)  # Add to the top: [3, 4, 5, 6]
+stack.pop()      # Remove from the top: [3, 4, 5]
+
+# Using lists as queues (FIFO)
+from collections import deque
+queue = deque(["Eric", "John", "Michael"])
+queue.append("Terry")   # Add to the right: deque(['Eric', 'John', 'Michael', 'Terry'])
+queue.popleft()         # Remove from the left: deque(['John', 'Michael', 'Terry'])
+
+# List comprehensions
+squares = [x**2 for x in range(10)]  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
+
+For more details on list operations, visit the [Python List Methods Documentation](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists).
+
+### Dictionaries and Sets
+
+Dictionaries and sets are incredibly useful for mapping and unique collection operations.
+
+<Alert type="warning" title="Dictionary Key Requirements">
+  Remember that dictionary keys must be hashable (immutable). Lists and dictionaries cannot be used as keys, but tuples can (if they contain only hashable elements).
+</Alert>
+
+![Python Dictionary Structure]("Conceptual visualization of a Python dictionary")
+
+For advanced dictionary operations, check out [Python's Collections Module](https://docs.python.org/3/library/collections.html) which includes specialized dictionary types like defaultdict and OrderedDict.
+
+## Advanced Function Features
+
+Python functions have advanced features that make them powerful tools for structured programming.
+
+<Video
+  src="https://www.youtube.com/video-url"
+  caption="Introduction to Python's Lambda Functions"
+  width="100%"
+/>
+
+### Lambda Expressions
+
+Lambda expressions allow you to create small anonymous functions without using the def statement.
+
+```python
+# Lambda function for adding two numbers
+add = lambda x, y: x + y
+print(add(5, 3))  # Output: 8
+
+# Using lambda with map()
+numbers = [1, 2, 3, 4]
+squared = list(map(lambda x: x**2, numbers))  # [1, 4, 9, 16]
+```
+
+<Alert type="success" title="Functional Programming">
+  Python supports functional programming paradigms through functions like map(), filter(), and reduce(). These are especially powerful when combined with lambda functions!
+</Alert>
+
+Learn more about [functional programming in Python](https://docs.python.org/3/howto/functional.html) in the official documentation.
+
+### Function Decorators
+
+Decorators are a powerful way to modify the behavior of functions without changing their code.
+
+<Alert type="warning" title="Decorator Usage">
+  While decorators are powerful, they can make your code harder to debug. Use them judiciously and document them well.
+</Alert>
+
+```python
+def timer_decorator(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} executed in {end_time - start_time:.4f} seconds")
+        return result
+    return wrapper
+
+@timer_decorator
+def calculate_factorial(n):
+    import math
+    return math.factorial(n)
+
+# Testing our decorated function
+factorial_result = calculate_factorial(10)  # Outputs execution time
+```
+
+For a deep dive into decorators, check out [Real Python's Primer on Decorators](https://realpython.com/primer-on-python-decorators/).
+
+## Object-Oriented Programming in Python
+
+Python is a versatile language that supports multiple programming paradigms, including object-oriented programming (OOP).
+
+<Alert type="info" title="Python Classes vs. Other Languages">
+  Python's OOP implementation is more flexible than languages like Java or C++. It supports multiple inheritance, metaclasses, and dynamic attribute creation.
+</Alert>
+
+<Video 
+  src="videos/test.mp4"
+  caption="Introduction to Object-Oriented Programming in Python"
+  poster="videos/thumbnails/test.jpg"
+  controls={true}
+  width="100%"
+/>
+
+### Classes and Inheritance
+
+Understanding classes and inheritance is fundamental to OOP in Python.
+
+```python
+class Animal:
+    def __init__(self, name):
+        self.name = name
+    
+    def speak(self):
+        return "Some sound"
+
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+# Creating instances
+dog = Dog("Rex")
+cat = Cat("Whiskers")
+
+print(f"{dog.name} says {dog.speak()}")  # Rex says Woof!
+print(f"{cat.name} says {cat.speak()}")  # Whiskers says Meow!
+```
+
+For more advanced OOP concepts, visit [Python's Classes Documentation](https://docs.python.org/3/tutorial/classes.html).
+
+## Generators and Iterators
+
+Generators and iterators are essential for efficient memory usage when working with large datasets.
+
+<Alert type="success" title="Memory Efficiency">
+  Generators are memory-efficient because they generate values on-the-fly rather than storing all values in memory at once.
+</Alert>
+
+### Understanding Generators
+
+Generators are a simple way to create iterators using functions and the yield statement.
+
+```python
+def fibonacci(n):
+    """Generate the first n Fibonacci numbers"""
+    a, b = 0, 1
+    count = 0
+    while count < n:
+        yield a
+        a, b = b, a + b
+        count += 1
+
+# Using the generator
+for number in fibonacci(10):
+    print(number, end=" ")  # 0 1 1 2 3 5 8 13 21 34
+```
+
+Learn more about iterators and generators in [David Beazley's Generator Tricks for Systems Programmers](http://www.dabeaz.com/generators/).
+
+## Context Managers
+
+Context managers allow you to allocate and release resources precisely when you want to.
+
+<Alert type="error" title="Resource Leaks">
+  Failing to properly close files, database connections, or network sockets can lead to resource leaks. Always use context managers when working with external resources.
+</Alert>
+
+```python
+# Using with statement to open files
+with open('example.txt', 'w') as file:
+    file.write('Hello, world!')
+# File is automatically closed when exiting the with block
+```
+
+To create your own context managers, read about [implementing the context manager protocol](https://docs.python.org/3/reference/datamodel.html#context-managers).
+
+## Check Your Understanding
+
+Test your knowledge of advanced Python features with this quiz:
+
+<Quiz 
+  questions={[
+    {
+      question: "Which of the following is NOT a built-in data structure in Python?",
+      options: [
+        "Lists", 
+        "LinkedList", 
+        "Dictionaries", 
+        "Sets"
+      ],
+      correctAnswer: 1,
+      explanation: "LinkedList is not a built-in data structure in Python. The built-in data structures include Lists, Tuples, Dictionaries, and Sets."
+    },
+    {
+      question: "What is a primary benefit of using generators in Python?",
+      options: [
+        "They execute faster than regular functions", 
+        "They can be used to create decorators", 
+        "They are memory-efficient for large datasets", 
+        "They can modify global variables"
+      ],
+      correctAnswer: 2,
+      explanation: "Generators are memory-efficient because they yield items one at a time rather than creating the entire collection in memory."
+    },
+    {
+      question: "What does the 'with' statement in Python primarily help with?",
+      options: [
+        "Exception handling", 
+        "Resource management", 
+        "Multithreading", 
+        "Function definition"
+      ],
+      correctAnswer: 1,
+      explanation: "The 'with' statement in Python is primarily used for resource management, ensuring resources are properly acquired and released."
+    },
+    {
+      question: "Which of these is a lambda function in Python?",
+      options: [
+        "def add(x, y): return x + y", 
+        "lambda x, y = x + y", 
+        "lambda x, y: x + y", 
+        "function(x, y) => x + y"
+      ],
+      correctAnswer: 2,
+      explanation: "The correct syntax for a lambda function in Python is 'lambda x, y: x + y', creating an anonymous function that adds two parameters."
+    }
+  ]}
+/>
+
+## Advanced Module Management
+
+Understanding how Python's module system works is essential for organizing large codebases.
+
+<Alert type="error" title="Import Caution">
+  Circular imports can cause difficult-to-debug issues in Python applications. Always structure your modules carefully to avoid circular dependencies.
+</Alert>
+
+### Working with Packages
+
+Python packages allow you to organize related modules into a directory hierarchy.
+
+```python
+# Package structure example
+mypackage/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        module3.py
+        module4.py
+```
+
+Learn about [Python's module system](https://docs.python.org/3/tutorial/modules.html) in the official documentation.
+
+## Exception Handling Best Practices
+
+<Alert type="warning" title="Specific Exceptions">
+  Always catch specific exceptions rather than using a bare except: clause, which can hide bugs and make debugging difficult.
+</Alert>
+
+```python
+try:
+    # Code that might raise exceptions
+    value = int("abc")
+except ValueError as e:
+    # Handle specific exception
+    print(f"Couldn't convert string to integer: {e}")
+except Exception as e:
+    # Fallback for other exceptions
+    print(f"Unexpected error: {e}")
+finally:
+    # Code that always runs
+    print("This always executes")
+```
+
+For more details on exception handling, check out [Python's Errors and Exceptions documentation](https://docs.python.org/3/tutorial/errors.html).
+
+## Multithreading and Multiprocessing
+
+Python offers several ways to achieve parallelism in your code.
+
+<Alert type="info" title="Python's GIL">
+  Due to Python's Global Interpreter Lock (GIL), threads may not provide true parallelism for CPU-bound tasks. Consider using the `multiprocessing` module instead for CPU-intensive operations.
+</Alert>
+
+```python
+import threading
+import time
+
+def worker(name):
+    print(f"Worker {name} starting")
+    time.sleep(2)
+    print(f"Worker {name} finished")
+
+# Create and start threads
+threads = []
+for i in range(5):
+    t = threading.Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+# Wait for all threads to complete
+for t in threads:
+    t.join()
+
+print("All threads finished")
+```
+
+For more on concurrent programming, see [Python's Concurrent Execution documentation](https://docs.python.org/3/library/concurrency.html).
+
+## Python's Data Science Ecosystem
+
+<Alert type="success" title="Data Science Tools">
+  Python has become the leading language for data science thanks to libraries like NumPy, pandas, matplotlib, and scikit-learn.
+</Alert>
+
+To explore Python's data science capabilities, visit:
+- [NumPy Documentation](https://numpy.org/doc/stable/)
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
+- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
+- [SciPy.org](https://scipy.org/) - The home of the Python scientific computing ecosystem
+
+## Final Thoughts
+
+Understanding these advanced Python features will significantly enhance your ability to write efficient, maintainable, and elegant code.
+
+<Alert type="info" title="Continuous Learning">
+  Python is constantly evolving. Stay updated with new features by regularly checking the [official Python documentation](https://docs.python.org/3/) and [Python Enhancement Proposals (PEPs)](https://peps.python.org/).
+</Alert>
+
+## Community Resources
+
+Join the vibrant Python community through these channels:
+- [Python.org Community Page](https://www.python.org/community/)
+- [Python Discord](https://pythondiscord.com/)
+- [r/Python on Reddit](https://www.reddit.com/r/Python/)
+- [Python Weekly Newsletter](https://www.pythonweekly.com/)
+
+## Next Steps
+
+Now that you've mastered advanced Python features, you're ready to tackle complex programming challenges and build sophisticated applications.
