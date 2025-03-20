@@ -15,7 +15,11 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
         <aside
-          className={`${isMenuOpen ? 'w-[20%] min-w-64 opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
+          className={`h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out ${
+            isMenuOpen
+              ? 'w-[20%] min-w-64 opacity-100'
+              : 'w-0 min-w-0 opacity-0'
+          }`}
         >
           <Sidebar
             courseSlug={'PureLearn'}
@@ -26,10 +30,7 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
           />
         </aside>
 
-        {/* Add overlay for mobile when menu is open */}
-        {isMenuOpen && <Overlay closeMenu={closeMenu} />}
-
-        <div className="flex-1 overflow-y-auto">
+        <div className="relative flex-1 overflow-y-auto">
           <Header />
           <main className="flex-1 overflow-y-auto bg-white p-6 dark:bg-gray-900">
             <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -83,6 +84,9 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
               </div>
             )}
           </main>
+
+          {/* Add overlay for mobile when menu is open */}
+          {isMenuOpen && <Overlay closeMenu={closeMenu} />}
         </div>
       </div>
     </div>

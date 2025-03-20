@@ -5,7 +5,7 @@ interface OverlayProps {
 const Overlay = ({ closeMenu }: OverlayProps) => {
   return (
     <div
-      className="fixed top-0 right-0 left-64 z-51 h-full w-full bg-black/80 md:hidden"
+      className="absolute top-0 left-0 z-51 h-full w-full bg-black/80 md:hidden"
       aria-label="Close menu overlay"
       tabIndex={0}
       onClick={closeMenu}
