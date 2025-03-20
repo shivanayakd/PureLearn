@@ -16,7 +16,7 @@ export default function CoursePageClient({
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
         <aside
-          className={`${isMenuOpen ? 'w-[20%] opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
+          className={`${isMenuOpen ? 'w-[20%] min-w-64 opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
         >
           <Sidebar
             courseSlug={courseSlug}

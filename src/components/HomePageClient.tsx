@@ -14,13 +14,14 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
         <aside
-          className={`${isMenuOpen ? 'w-[20%] opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
+          className={`${isMenuOpen ? 'w-[20%] min-w-64 opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
         >
           <Sidebar
             courseSlug={'PureLearn'}
             topics={[]}
             currentTopic={''}
             currentSubtopic={''}
+            courses={courses}
           />
         </aside>
 
@@ -38,7 +39,7 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
                   href={`/courses/${course.slug}`}
                   className="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
                 >
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                  <h3 className="mt-0 mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                     {course.title}
                   </h3>
                   <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">

@@ -14,13 +14,17 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { SidebarProps } from '@/types';
+import HomePageSidebar from './HomePageSidebar';
 
 export default function Sidebar({
   courseSlug,
   topics,
   currentTopic,
   currentSubtopic,
+  courses,
 }: SidebarProps) {
+  // Determine if we're showing course list or course content
+  const showCourseList = !topics || topics.length === 0;
   const {
     sectionProgress,
     quizProgress,
@@ -101,119 +105,137 @@ export default function Sidebar({
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div className="flex h-full w-full flex-col overflow-y-auto border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
       {/* Course Outline Header */}
       <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
         <div className="flex items-center">
-          <MenuSquare className="mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" />
-          <Link
-            href={`/courses/${courseSlug}`}
-            className="text-sm font-medium tracking-wide text-gray-600 uppercase hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-          >
-            Course Outline
-          </Link>
+          {showCourseList ? (
+            <div className="py-3 text-sm font-bold tracking-wide text-gray-600 uppercase dark:text-gray-300">
+              Pure Learn
+            </div>
+          ) : (
+            <>
+              <MenuSquare className="mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" />
+              <Link
+                href={`/courses/${courseSlug}`}
+                className="text-sm font-medium tracking-wide text-gray-600 uppercase hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              >
+                Course Outline
+              </Link>
+            </>
+          )}
         </div>
 
-        <Button
-          onClick={() => resetSectionProgress(courseSlug)}
-          variant="ghost"
-          size="icon"
-          aria-label="Reset Progress"
-          title="Reset Progress"
-          className="h-7 w-7 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-        >
-          <RotateCcw className="h-3.5 w-3.5" />
-        </Button>
+        {/* Only show reset button in course content view */}
+        {!showCourseList && (
+          <Button
+            onClick={() => resetSectionProgress(courseSlug)}
+            variant="ghost"
+            size="icon"
+            aria-label="Reset Progress"
+            title="Reset Progress"
+            className="h-7 w-7 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+          </Button>
+        )}
       </div>
 
-      {/* Topics Navigation */}
-      <nav className="mt-1">
-        <ul className="space-y-px">
-          {topics.map((topic) => {
-            const isTopicCompleted = isCompleted(topic.slug);
+      {/* Content area - conditionally show course list or topic navigation */}
+      {showCourseList ? (
+        <HomePageSidebar courses={courses} />
+      ) : (
+        <nav className="mt-1">
+          <ul className="space-y-px">
+            {topics.map((topic) => {
+              const isTopicCompleted = isCompleted(topic.slug);
 
-            return (
-              <li key={topic.slug} className="mb-1">
-                <div
-                  className={`flex cursor-pointer items-center justify-between px-4 py-3 ${
-                    isActive(topic.slug) && !expandedTopics[topic.slug]
-                      ? 'bg-gray-200 text-gray-900'
-                      : expandedTopics[topic.slug]
-                        ? 'bg-gray-200 text-black'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                  }`}
-                  onClick={() => toggleTopic(topic.slug)}
-                  tabIndex={0}
-                  role="button"
-                  aria-expanded={expandedTopics[topic.slug]}
-                  onKeyDown={(e) =>
-                    e.key === 'Enter' && toggleTopic(topic.slug)
-                  }
-                >
-                  <span className="flex items-center gap-2 font-medium">
-                    {isTopicCompleted ? (
-                      <Circle
-                        className="h-4 w-4 text-gray-500"
-                        fill="currentColor"
-                      />
-                    ) : (
-                      <Circle className="h-4 w-4 text-gray-400" />
-                    )}
-                    <span>{topic.title}</span>
-                  </span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${
-                      expandedTopics[topic.slug] ? 'rotate-180' : ''
+              return (
+                <li key={topic.slug} className="mb-1">
+                  <div
+                    className={`flex cursor-pointer items-center justify-between px-4 py-3 ${
+                      isActive(topic.slug) && !expandedTopics[topic.slug]
+                        ? 'bg-gray-200 text-gray-900'
+                        : expandedTopics[topic.slug]
+                          ? 'bg-gray-200 text-black'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                     }`}
-                  />
-                </div>
+                    onClick={() => toggleTopic(topic.slug)}
+                    tabIndex={0}
+                    role="button"
+                    aria-expanded={expandedTopics[topic.slug]}
+                    onKeyDown={(e) =>
+                      e.key === 'Enter' && toggleTopic(topic.slug)
+                    }
+                  >
+                    <span className="flex items-center gap-2 font-medium">
+                      {isTopicCompleted ? (
+                        <Circle
+                          className="h-4 w-4 text-gray-500"
+                          fill="currentColor"
+                        />
+                      ) : (
+                        <Circle className="h-4 w-4 text-gray-400" />
+                      )}
+                      <span>{topic.title}</span>
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-200 ${
+                        expandedTopics[topic.slug] ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </div>
 
-                {expandedTopics[topic.slug] && (
-                  <ul className="dark:bg-gray-850 bg-gray-50 py-1 dark:border-gray-800">
-                    {topic.subtopics.map((subtopic) => {
-                      const subtopicCompleted = isCompleted(
-                        topic.slug,
-                        subtopic.slug,
-                      );
-                      const hasQuizSection = hasQuiz(topic.slug, subtopic.slug);
-                      const isActiveSubtopic = isActive(
-                        topic.slug,
-                        subtopic.slug,
-                      );
+                  {expandedTopics[topic.slug] && (
+                    <ul className="dark:bg-gray-850 bg-gray-50 py-1 dark:border-gray-800">
+                      {topic.subtopics.map((subtopic) => {
+                        const subtopicCompleted = isCompleted(
+                          topic.slug,
+                          subtopic.slug,
+                        );
+                        const hasQuizSection = hasQuiz(
+                          topic.slug,
+                          subtopic.slug,
+                        );
+                        const isActiveSubtopic = isActive(
+                          topic.slug,
+                          subtopic.slug,
+                        );
 
-                      return (
-                        <li key={subtopic.slug}>
-                          <Link
-                            href={`/courses/${courseSlug}/${topic.slug}/${subtopic.slug}`}
-                            className={`flex items-center px-6 py-3 transition-colors ${
-                              isActiveSubtopic
-                                ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
-                            }`}
-                            tabIndex={0}
-                          >
-                            <span className="mr-2">
-                              {subtopicCompleted ? (
-                                <Check className="h-4 w-4 text-green-500" />
-                              ) : (
-                                <Circle className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                        return (
+                          <li key={subtopic.slug}>
+                            <Link
+                              href={`/courses/${courseSlug}/${topic.slug}/${subtopic.slug}`}
+                              className={`flex items-center px-6 py-3 transition-colors ${
+                                isActiveSubtopic
+                                  ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+                                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                              }`}
+                              tabIndex={0}
+                            >
+                              <span className="mr-2">
+                                {subtopicCompleted ? (
+                                  <Check className="h-4 w-4 text-green-500" />
+                                ) : (
+                                  <Circle className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                                )}
+                              </span>
+                              <span className="flex-1">{subtopic.title}</span>
+                              {hasQuizSection && (
+                                <FileText className="ml-2 h-3.5 w-3.5 text-gray-400" />
                               )}
-                            </span>
-                            <span className="flex-1">{subtopic.title}</span>
-                            {hasQuizSection && (
-                              <FileText className="ml-2 h-3.5 w-3.5 text-gray-400" />
-                            )}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )}
 
       {/* Footer */}
       <footer className="mt-auto border-t border-gray-200 px-4 py-3 text-center text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
@@ -221,7 +243,7 @@ export default function Sidebar({
           <span>Built with</span>
           <Link
             href="https://github.com/shivanayakd/purelearn"
-            className="font-medium text-gray-700 dark:text-gray-300"
+            className="font-medium text-blue-600"
             target="_blank"
             rel="noopener noreferrer"
             tabIndex={0}
@@ -229,7 +251,7 @@ export default function Sidebar({
             PureLearn
           </Link>
           <span>Theme</span>
-          <Heart className="h-3 w-3 text-red-500" fill="currentColor" />
+          <Heart className="h-3 w-3 text-red-600" fill="currentColor" />
         </div>
       </footer>
     </div>

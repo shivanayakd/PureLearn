@@ -128,6 +128,7 @@ export type SidebarProps = {
   topics: TopicType[];
   currentTopic?: string;
   currentSubtopic?: string;
+  courses?: Course[];
 };
 
 export type MobileSidebarWrapperProps = {
