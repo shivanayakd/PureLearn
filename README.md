@@ -8,7 +8,6 @@ A Next.js-based minimal learning theme designed for tracking and taking detailed
 - **Structured Syllabus**: Organize topics and subtopics in a hierarchical structure
 - **Distraction-free Reading**: Clean UI focused on content consumption
 - **Highlights Section**: Automatically extracts key points from content
-- **Dark Mode**: Toggle between light and dark themes
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## Getting Started
