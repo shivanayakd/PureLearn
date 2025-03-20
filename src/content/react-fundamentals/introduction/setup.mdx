@@ -1,0 +1,67 @@
+---
+title: "Setting Up a React Project"
+description: "Learn how to set up a new React project using Create React App and other tools"
+---
+
+There are several ways to set up a React project. In this guide, we'll cover the most common methods.
+
+## Using Create React App
+
+Create React App is a comfortable environment for learning React, and is the best way to start building a new single-page application in React.
+
+```bash
+npx create-react-app my-app
+cd my-app
+npm start
+```
+
+This will create a new React project called `my-app` and start the development server.
+
+## Using Vite
+
+Vite is a newer build tool that provides a faster and leaner development experience for modern web projects.
+
+```bash
+npm create vite@latest my-react-app -- --template react
+cd my-react-app
+npm install
+npm run dev
+```
+
+## Using Next.js
+
+Next.js is a React framework that provides features like server-side rendering and static site generation.
+
+```bash
+npx create-next-app@latest my-next-app
+cd my-next-app
+npm run dev
+```
+
+## Project Structure
+
+A typical React project structure looks like this:
+
+```
+my-app/
+  README.md
+  node_modules/
+  package.json
+  public/
+    index.html
+    favicon.ico
+  src/
+    App.css
+    App.js
+    App.test.js
+    index.css
+    index.js
+    logo.svg
+```
+
+## Highlights
+
+- Create React App is the easiest way to start a new React project
+- Vite provides a faster development experience
+- Next.js adds server-side rendering capabilities
+- Understanding the project structure is important for organizing your code

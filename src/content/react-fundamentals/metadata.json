@@ -1,0 +1,76 @@
+{
+  "title": "React Fundamentals",
+  "description": "Learn the core concepts of React, including components, props, state, and hooks.",
+  "slug": "react-fundamentals",
+  "author": "Learning Theme",
+  "topics": [
+    {
+      "title": "Introduction to React",
+      "slug": "introduction",
+      "subtopics": [
+        {
+          "title": "What is React?",
+          "slug": "what-is-react"
+        },
+        {
+          "title": "Setting Up a React Project",
+          "slug": "setup"
+        }
+      ]
+    },
+    {
+      "title": "Components and Props",
+      "slug": "components-and-props",
+      "subtopics": [
+        {
+          "title": "Functional Components",
+          "slug": "functional-components"
+        },
+        {
+          "title": "Class Components",
+          "slug": "class-components"
+        },
+        {
+          "title": "Props",
+          "slug": "props"
+        }
+      ]
+    },
+    {
+      "title": "State and Lifecycle",
+      "slug": "state-and-lifecycle",
+      "subtopics": [
+        {
+          "title": "State in Functional Components",
+          "slug": "state-in-functional-components"
+        },
+        {
+          "title": "State in Class Components",
+          "slug": "state-in-class-components"
+        },
+        {
+          "title": "Component Lifecycle",
+          "slug": "component-lifecycle"
+        }
+      ]
+    },
+    {
+      "title": "Hooks",
+      "slug": "hooks",
+      "subtopics": [
+        {
+          "title": "useState",
+          "slug": "usestate"
+        },
+        {
+          "title": "useEffect",
+          "slug": "useeffect"
+        },
+        {
+          "title": "Custom Hooks",
+          "slug": "custom-hooks"
+        }
+      ]
+    }
+  ]
+}

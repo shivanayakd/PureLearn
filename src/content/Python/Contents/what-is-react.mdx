@@ -1,0 +1,46 @@
+---
+title: "What is React?"
+description: "An introduction to React and its core concepts"
+---
+
+React is a JavaScript library for building user interfaces. It was developed by Facebook and is now maintained by Facebook and a community of individual developers and companies.
+
+## Key Features of React
+
+- **Component-Based**: React is built around the concept of reusable components. Components are isolated pieces of code that can be composed to create complex UIs.
+
+- **Declarative**: React makes it easy to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.
+
+- **Learn Once, Write Anywhere**: React can be used to develop applications for various platforms, including web applications, mobile applications (using React Native), and even VR applications (using React 360).
+
+## Virtual DOM
+
+One of React's most powerful features is the Virtual DOM. Instead of directly manipulating the browser's DOM, React creates a virtual DOM in memory, where it does all the necessary manipulating before making the changes in the browser DOM.
+
+```jsx
+import React from "react";
+import ReactDOM from "react-dom";
+
+function HelloWorld() {
+  return <h1>Hello, World!</h1>;
+}
+
+ReactDOM.render(<HelloWorld />, document.getElementById("root"));
+```
+
+## JSX
+
+React uses JSX, a syntax extension to JavaScript that looks similar to HTML. JSX makes it easier to write and add HTML in React.
+
+```jsx
+const element = <h1>Hello, World!</h1>;
+```
+
+JSX is not required to use React, but it makes the code more readable and easier to write.
+
+## Highlights
+
+- React is a JavaScript library for building user interfaces
+- It uses a component-based architecture
+- The Virtual DOM improves performance by minimizing direct DOM manipulation
+- JSX is a syntax extension that makes it easier to write React components
