@@ -9,12 +9,12 @@ import { useMenu } from '@/hooks/MenuProvider';
 
 export default function HomePageClient({ courses }: HomePageClientProps) {
   const { isMenuOpen } = useMenu();
-  console.log('🚀 ~ isMenuOpen:', isMenuOpen);
+
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
         <aside
-          className={`${isMenuOpen ? 'w-64 opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
+          className={`${isMenuOpen ? 'w-[20%] opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
         >
           <Sidebar
             courseSlug={'PureLearn'}
@@ -25,7 +25,7 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
         </aside>
 
         <div className="flex-1 overflow-y-auto">
-          <Header title={'PureLearn'} />
+          <Header />
           <main className="flex-1 overflow-y-auto bg-white p-6 dark:bg-gray-900">
             <h2 className="mb-6 text-xl font-semibold text-gray-800 dark:text-gray-200">
               Available Courses

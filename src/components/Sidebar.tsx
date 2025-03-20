@@ -3,9 +3,18 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useQuizProgress } from './quiz/QuizProvider';
-import { Check, Heart, Home, RotateCcw } from 'lucide-react';
+import {
+  Check,
+  Heart,
+  RotateCcw,
+  ChevronDown,
+  FileText,
+  Circle,
+  MenuSquare,
+} from 'lucide-react';
 import { Button } from './ui/button';
 import { SidebarProps } from '@/types';
+
 export default function Sidebar({
   courseSlug,
   topics,
@@ -18,6 +27,7 @@ export default function Sidebar({
     checkTopicCompletion,
     resetSectionProgress,
   } = useQuizProgress();
+
   const [expandedTopics, setExpandedTopics] = useState<Record<string, boolean>>(
     topics.reduce(
       (acc, topic) => {
@@ -62,7 +72,7 @@ export default function Sidebar({
 
       // Check if all subtopics are completed
       const topic = topics.find((t) => t.slug === topicSlug);
-      if (topic) {
+      if (topic && topic.subtopics.length > 0) {
         const subtopicSlugs = topic.subtopics.map((st) => st.slug);
         return checkTopicCompletion(courseSlug, topicSlug, subtopicSlugs);
       }
@@ -85,115 +95,142 @@ export default function Sidebar({
     return currentTopic === topicSlug;
   };
 
+  const hasQuiz = (topicSlug: string, subtopicSlug: string) => {
+    const sectionId = `${courseSlug}/${topicSlug}/${subtopicSlug}`;
+    return quizProgress[sectionId] !== undefined;
+  };
+
   return (
-    <div className="h-full w-full overflow-y-auto border-r border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
-      <div className="flex items-center justify-between gap-2 p-4">
-        <Link href="/">
-          <Home className="h-6 w-6" />
-        </Link>
-        <div className="text-xl font-bold text-gray-900 dark:text-white">
-          {courseSlug}
+    <div className="h-full w-full overflow-y-auto border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+      {/* Course Outline Header */}
+      <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+        <div className="flex items-center">
+          <MenuSquare className="mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" />
+          <Link
+            href={`/courses/${courseSlug}`}
+            className="text-sm font-medium tracking-wide text-gray-600 uppercase hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+          >
+            Course Outline
+          </Link>
         </div>
-      </div>
-      <div className="flex items-center justify-between px-4 py-2">
-        <Link
-          href={`/courses/${courseSlug}`}
-          className="text-lg font-semibold text-gray-800 hover:text-gray-600 dark:text-gray-200 dark:hover:text-gray-400"
-        >
-          {/* {topics.length > 0 ? topics[0].title.split(" ")[0] : courseSlug} */}
-          Course Outline
-        </Link>
 
         <Button
           onClick={() => resetSectionProgress(courseSlug)}
-          variant="outline"
+          variant="ghost"
           size="icon"
           aria-label="Reset Progress"
           title="Reset Progress"
-          className="h-8 w-8 bg-gray-200 p-0 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700"
+          className="h-7 w-7 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-300"
         >
-          <RotateCcw className="h-3 w-3" />
+          <RotateCcw className="h-3.5 w-3.5" />
         </Button>
       </div>
-      <nav className="mt-2">
-        <ul className="space-y-1">
-          {topics.map((topic) => (
-            <li key={topic.slug} className="px-2">
-              <div
-                className={`flex cursor-pointer items-center justify-between rounded-md px-2 py-2 ${
-                  isActive(topic.slug)
-                    ? 'bg-gray-200 dark:bg-gray-800'
-                    : 'hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
-                onClick={() => toggleTopic(topic.slug)}
-              >
-                <span className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {topic.title}
-                  {/* Add checkmark for completed topics */}
-                  {isCompleted(topic.slug) && (
-                    <Check className="h-4 w-4 text-green-500" />
-                  )}
-                </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`h-4 w-4 text-gray-500 transition-transform ${
-                    expandedTopics[topic.slug] ? 'rotate-180 transform' : ''
+
+      {/* Topics Navigation */}
+      <nav className="mt-1">
+        <ul className="space-y-px">
+          {topics.map((topic) => {
+            const isTopicCompleted = isCompleted(topic.slug);
+
+            return (
+              <li key={topic.slug} className="mb-1">
+                <div
+                  className={`flex cursor-pointer items-center justify-between px-4 py-3 ${
+                    isActive(topic.slug) && !expandedTopics[topic.slug]
+                      ? 'bg-gray-200 text-gray-900'
+                      : expandedTopics[topic.slug]
+                        ? 'bg-gray-200 text-black'
+                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  onClick={() => toggleTopic(topic.slug)}
+                  tabIndex={0}
+                  role="button"
+                  aria-expanded={expandedTopics[topic.slug]}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' && toggleTopic(topic.slug)
+                  }
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
+                  <span className="flex items-center gap-2 font-medium">
+                    {isTopicCompleted ? (
+                      <Circle
+                        className="h-4 w-4 text-gray-500"
+                        fill="currentColor"
+                      />
+                    ) : (
+                      <Circle className="h-4 w-4 text-gray-400" />
+                    )}
+                    <span>{topic.title}</span>
+                  </span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      expandedTopics[topic.slug] ? 'rotate-180' : ''
+                    }`}
                   />
-                </svg>
-              </div>
-              {expandedTopics[topic.slug] && (
-                <ul className="mt-1 ml-4 space-y-1">
-                  {topic.subtopics.map((subtopic) => (
-                    <li key={subtopic.slug}>
-                      <Link
-                        href={`/courses/${courseSlug}/${topic.slug}/${subtopic.slug}`}
-                        className={`block rounded-md px-2 py-1.5 text-sm ${
-                          isActive(topic.slug, subtopic.slug)
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
-                            : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          {subtopic.title}
-                          {/* Add checkmark for completed subtopics */}
-                          {isCompleted(topic.slug, subtopic.slug) && (
-                            <Check className="h-4 w-4 font-bold text-green-500" />
-                          )}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
+                </div>
+
+                {expandedTopics[topic.slug] && (
+                  <ul className="dark:bg-gray-850 bg-gray-50 py-1 dark:border-gray-800">
+                    {topic.subtopics.map((subtopic) => {
+                      const subtopicCompleted = isCompleted(
+                        topic.slug,
+                        subtopic.slug,
+                      );
+                      const hasQuizSection = hasQuiz(topic.slug, subtopic.slug);
+                      const isActiveSubtopic = isActive(
+                        topic.slug,
+                        subtopic.slug,
+                      );
+
+                      return (
+                        <li key={subtopic.slug}>
+                          <Link
+                            href={`/courses/${courseSlug}/${topic.slug}/${subtopic.slug}`}
+                            className={`flex items-center px-6 py-3 transition-colors ${
+                              isActiveSubtopic
+                                ? 'bg-blue-50 font-medium text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+                                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                            }`}
+                            tabIndex={0}
+                          >
+                            <span className="mr-2">
+                              {subtopicCompleted ? (
+                                <Check className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <Circle className="h-4 w-4 text-gray-300 dark:text-gray-600" />
+                              )}
+                            </span>
+                            <span className="flex-1">{subtopic.title}</span>
+                            {hasQuizSection && (
+                              <FileText className="ml-2 h-3.5 w-3.5 text-gray-400" />
+                            )}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
-      <footer className="border-t border-gray-200 p-4 text-center text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
-        Built with{' '}
-        <a
-          href="https://github.com/shivanayakd/purelearn"
-          className="text-blue-600 hover:underline dark:text-blue-400"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          PureLearn
-        </a>{' '}
-        Theme{' '}
-        <Heart
-          className="inline-block h-3 w-3 text-red-600"
-          fill="currentColor"
-        />
+
+      {/* Footer */}
+      <footer className="mt-auto border-t border-gray-200 px-4 py-3 text-center text-xs text-gray-500 dark:border-gray-800 dark:text-gray-400">
+        <div className="flex items-center justify-center gap-1">
+          <span>Built with</span>
+          <Link
+            href="https://github.com/shivanayakd/purelearn"
+            className="font-medium text-gray-700 dark:text-gray-300"
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={0}
+          >
+            PureLearn
+          </Link>
+          <span>Theme</span>
+          <Heart className="h-3 w-3 text-red-500" fill="currentColor" />
+        </div>
       </footer>
     </div>
   );

@@ -165,7 +165,6 @@ export type HighlightsProps = {
 };
 
 export type HeaderProps = {
-  title?: string;
   children?: React.ReactNode;
 };
 

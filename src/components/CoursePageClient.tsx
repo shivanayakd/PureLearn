@@ -16,7 +16,7 @@ export default function CoursePageClient({
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
         <aside
-          className={`${isMenuOpen ? 'w-64 opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
+          className={`${isMenuOpen ? 'w-[20%] opacity-100' : 'w-0 opacity-0'} h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out`}
         >
           <Sidebar
             courseSlug={courseSlug}
@@ -27,7 +27,7 @@ export default function CoursePageClient({
         </aside>
 
         <div className="flex-1 overflow-y-auto">
-          <Header title={course.title} />
+          <Header />
           <main className="flex-1 overflow-y-auto bg-white p-6 dark:bg-gray-900">
             <div className="mx-auto max-w-3xl">
               <h1 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">
