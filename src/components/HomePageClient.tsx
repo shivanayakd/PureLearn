@@ -6,9 +6,10 @@ import Header from '@/components/Header';
 import { HomePageClientProps } from '@/types';
 import Sidebar from './Sidebar';
 import { useMenu } from '@/hooks/MenuProvider';
+import Overlay from './overlay';
 
 export default function HomePageClient({ courses }: HomePageClientProps) {
-  const { isMenuOpen } = useMenu();
+  const { isMenuOpen, closeMenu } = useMenu();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -24,6 +25,9 @@ export default function HomePageClient({ courses }: HomePageClientProps) {
             courses={courses}
           />
         </aside>
+
+        {/* Add overlay for mobile when menu is open */}
+        {isMenuOpen && <Overlay closeMenu={closeMenu} />}
 
         <div className="flex-1 overflow-y-auto">
           <Header />

@@ -8,6 +8,7 @@ import SubtopicReferences from '@/components/SubTopicReferences';
 import { Topic, Subtopic } from '@/types';
 import Header from '@/components/Header';
 import { useMenu } from '@/hooks/MenuProvider';
+import Overlay from './overlay';
 
 export interface TopicPageClientProps {
   courseSlug: string;
@@ -43,7 +44,7 @@ export default function TopicPageClient({
   prevLink,
   nextLink,
 }: TopicPageClientProps) {
-  const { isMenuOpen } = useMenu();
+  const { isMenuOpen, closeMenu } = useMenu();
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -58,6 +59,9 @@ export default function TopicPageClient({
             currentSubtopic={subtopicSlug}
           />
         </aside>
+
+        {/* Add overlay for mobile when menu is open */}
+        {isMenuOpen && <Overlay closeMenu={closeMenu} />}
 
         <div className="flex-1 overflow-y-auto">
           <Header />

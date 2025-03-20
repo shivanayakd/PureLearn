@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { CoursePageClientProps, Subtopic, Topic } from '@/types';
 import Header from './Header';
 import { useMenu } from '@/hooks/MenuProvider';
+import Overlay from './overlay';
 export default function CoursePageClient({
   course,
   courseSlug,
   currentTopic,
   currentSubtopic,
 }: CoursePageClientProps) {
-  const { isMenuOpen } = useMenu();
+  const { isMenuOpen, closeMenu } = useMenu();
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <div className="flex h-full w-full overflow-hidden">
@@ -25,6 +26,9 @@ export default function CoursePageClient({
             currentSubtopic={currentSubtopic}
           />
         </aside>
+
+        {/* Add overlay for mobile when menu is open */}
+        {isMenuOpen && <Overlay closeMenu={closeMenu} />}
 
         <div className="flex-1 overflow-y-auto">
           <Header />
