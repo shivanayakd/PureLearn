@@ -9,6 +9,7 @@ import { Topic, Subtopic } from '@/types';
 import Header from '@/components/Header';
 import { useMenu } from '@/hooks/MenuProvider';
 import Overlay from './overlay';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export interface TopicPageClientProps {
   courseSlug: string;
@@ -72,24 +73,30 @@ export default function TopicPageClient({
                 {!prevLink ? (
                   <Link
                     href={`/courses/${courseSlug}`}
-                    className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                    className="flex items-center gap-1.5 rounded-md bg-gray-200 px-3 py-2 text-sm font-medium text-blue-900 transition-colors hover:bg-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:hover:bg-gray-900/30"
                   >
-                    ← Back to Course Outline
+                    <ArrowLeft className="h-4 w-4" />
+                    Back
+                    <span className="hidden md:inline">to Course Outline</span>
                   </Link>
                 ) : (
                   <Link
                     href={prevLink.href}
-                    className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                    className="flex items-center gap-1.5 rounded-md bg-gray-200 px-3 py-2 text-sm font-medium text-blue-900 transition-colors hover:bg-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:hover:bg-gray-900/30"
                   >
-                    ← Previous: {prevLink.title}
+                    <ArrowLeft className="h-4 w-4" />
+                    Previous
+                    <span className="hidden md:inline">: {prevLink.title}</span>
                   </Link>
                 )}
                 {nextLink && (
                   <Link
                     href={nextLink.href}
-                    className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                    className="flex items-center gap-1.5 rounded-md bg-gray-200 px-3 py-2 text-sm font-medium text-blue-900 transition-colors hover:bg-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:hover:bg-gray-900/30"
                   >
-                    Next: {nextLink.title} →
+                    Next
+                    <span className="hidden md:inline">: {nextLink.title}</span>
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 )}
               </div>
