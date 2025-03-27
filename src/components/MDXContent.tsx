@@ -150,6 +150,17 @@ export default function MDXContent({ source }: MDXContentProps) {
       title?: string;
       children: React.ReactNode;
     }) => <Alert {...props} />,
+
+    // Add list components with proper styling
+    ul: ({ children }: { children: React.ReactNode }) => (
+      <ul className="my-4 list-disc space-y-2 pl-6">{children}</ul>
+    ),
+    ol: ({ children }: { children: React.ReactNode }) => (
+      <ol className="my-4 list-decimal space-y-2 pl-6">{children}</ol>
+    ),
+    li: ({ children }: { children: React.ReactNode }) => (
+      <li className="my-1">{children}</li>
+    ),
   };
 
   return (

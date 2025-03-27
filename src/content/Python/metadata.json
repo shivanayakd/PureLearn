@@ -9,6 +9,10 @@
       "slug": "Contents",
       "subtopics": [
         {
+          "title": "How a Computer Program Works",
+          "slug": "how-computer-program-works"
+        },
+        {
           "title": "What is Python?",
           "slug": "what-is-react"
         },
